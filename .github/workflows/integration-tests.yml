@@ -16,7 +16,7 @@ on:
       scala-versions:
         description: 'Comma-separated scala versions (alternated across databases)'
         required: false
-        default: '2-LATEST,2-PRIOR'
+        default: '2-LATEST'
         type: string
 
   workflow_call:
@@ -29,7 +29,7 @@ on:
       scala-versions:
         description: 'Comma-separated scala versions - will be alternated across database versions'
         required: false
-        default: '2-LATEST,2-PRIOR'
+        default: '2-LATEST'
         type: string
 
 concurrency:
@@ -47,7 +47,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: "temurin"
-          java-version: "11"
+          java-version: "17"
 
       - name: Restore SBT cache
         uses: actions/cache@v4
@@ -81,7 +81,7 @@ jobs:
 
       - name: Generate matrix with alternating scala versions
         id: matrix
-        run: make generate-test-matrix DATABASES="${{ inputs.databases || 'scylla:LATEST,scylla:LTS-LATEST,cassandra:3-LATEST,cassandra:4-LATEST,cassandra:5-LATEST' }}" SCALA_VERSIONS="${{ inputs.scala-versions || '2-LATEST,2-PRIOR' }}"
+        run: make generate-test-matrix DATABASES="${{ inputs.databases || 'scylla:LATEST,scylla:LTS-LATEST,cassandra:3-LATEST,cassandra:4-LATEST,cassandra:5-LATEST' }}" SCALA_VERSIONS="${{ inputs.scala-versions || '2-LATEST' }}"
 
   test:
     name: "${{ matrix.db-type }} ${{ matrix.db-version }} / scala ${{ matrix.scala }}"
@@ -114,9 +114,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: "temurin"
-          java-version: | # order is important, the last one is the default which will be used by SBT
-            11
-            8
+          java-version: "17"
 
       - name: Restore SBT cache
         uses: actions/cache@v4
