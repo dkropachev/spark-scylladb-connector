@@ -65,7 +65,7 @@ class CassandraCatalogSpecBase
   def networkTopologyDbProperties(rf: Int = 1): String =
     s"class='NetworkTopologyStrategy',$defaultDatacenter='$rf'"
 
-  def createDefaultKs(rf: Int = 5) = {
+  def createDefaultKs(rf: Int = 1) = {
     dropKeyspace(defaultKs)
     spark.sql(s"CREATE DATABASE IF NOT EXISTS $defaultKs WITH DBPROPERTIES (${networkTopologyDbProperties(rf)})")
     waitForKeyspaceToExist(defaultKs, true)
