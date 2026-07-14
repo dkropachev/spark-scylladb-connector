@@ -66,7 +66,7 @@ class BoundStatementBuilderRegressionTest {
       false,
       CodecRegistry.DEFAULT,
       ProtocolVersion.DEFAULT,
-      false)
+      null)
   }
 
   @Test
