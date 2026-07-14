@@ -59,9 +59,15 @@ class CassandraCatalogSpecBase
       .getTable(fromInternal(table)).get
   }
 
+  def defaultDatacenter: String =
+    getMetadata().getNodes.values().iterator().next().getDatacenter
+
+  def networkTopologyDbProperties(rf: Int = 1): String =
+    s"class='NetworkTopologyStrategy',$defaultDatacenter='$rf'"
+
   def createDefaultKs(rf: Int = 5) = {
     dropKeyspace(defaultKs)
-    spark.sql(s"CREATE DATABASE IF NOT EXISTS $defaultKs WITH DBPROPERTIES (class='SimpleStrategy',replication_factor='$rf')")
+    spark.sql(s"CREATE DATABASE IF NOT EXISTS $defaultKs WITH DBPROPERTIES (${networkTopologyDbProperties(rf)})")
     waitForKeyspaceToExist(defaultKs, true)
   }
 
