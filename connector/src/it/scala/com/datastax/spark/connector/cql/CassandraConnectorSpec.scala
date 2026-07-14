@@ -138,7 +138,7 @@ class CassandraConnectorSpec extends SparkCassandraITFlatSpecBase with DefaultCl
     val originalSize = sessionCache.cache.size
 
     CassandraConnector(sc.getConf).withSessionDo { session =>
-      session.execute(createKeyspaceCql)
+      session.execute(keyspaceCql(session, ks))
       session.execute(s"CREATE TABLE IF NOT EXISTS $ks.pair (x int, y int, PRIMARY KEY (x))")
     }
     for (trial <- 1 to 4) {
