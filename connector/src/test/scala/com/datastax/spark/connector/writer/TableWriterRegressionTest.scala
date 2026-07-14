@@ -99,7 +99,7 @@ class TableWriterRegressionTest {
       false,
       CodecRegistry.DEFAULT,
       ProtocolVersion.DEFAULT,
-      false)
+      null)
   }
 
   private def connectorReturning(preparedStatement: PreparedStatement): CassandraConnector = {
